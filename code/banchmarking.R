@@ -19,7 +19,7 @@ for(i in 1:length(ss)){
   
   ban1[[i]] <- microbenchmark(
     "Bn"    = indeptest(x, y),
-    "Hoeff" = hoeffd(x, y),
+    "Hoef"  = hoeffd(x, y),
     "MIC"   = mine_stat(x, y),
     "dCov"  = dcov.test(x, y),
     "HHG"   = hhg(x, y),
@@ -33,6 +33,7 @@ dt <- Reduce(rbind, ban1)
 dt$n <- rep(ss, each = 500)
 
 write.csv(dt, "exec_times.csv", row.names = FALSE)
+dt <- read.csv("exec_times.csv")
 
 dtsum <- dt |> group_by(expr, n) |> summarise(median = median(time),
                                               p05 = quantile(time, 0.05),
